@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: embedding
+  datasource:
+    url: jdbc:postgresql://localhost:5432/embedding_db
+    username: postgres
+    password: postgres
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:sk-your-api-key}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      chat:
+        enabled: false
+      embedding:
+        options:
+          model: text-embedding-3-small
+          dimensions: 1536
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+        initialize-schema: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
