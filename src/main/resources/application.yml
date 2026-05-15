@@ -17,7 +17,8 @@ spring:
       api-key: ${OPENAI_API_KEY:sk-your-api-key}
       base-url: ${OPENAI_BASE_URL:https://api.openai.com}
       chat:
-        enabled: false
+        options:
+          model: gpt-4o-mini
       embedding:
         options:
           model: text-embedding-3-small

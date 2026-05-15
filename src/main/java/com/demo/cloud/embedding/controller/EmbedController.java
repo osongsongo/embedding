@@ -1,5 +1,6 @@
 package com.demo.cloud.embedding.controller;
 
+import com.demo.cloud.embedding.dto.DeleteByFilterRequest;
 import com.demo.cloud.embedding.dto.EmbedRequest;
 import com.demo.cloud.embedding.service.FileEmbeddingService;
 import com.demo.cloud.embedding.vo.ApiResult;
@@ -58,5 +59,19 @@ public class EmbedController {
 
         FileUploadVO result = fileEmbeddingService.embedFile(file);
         return ApiResult.success(result);
+    }
+
+    @Operation(summary = "根据ID删除文档")
+    @DeleteMapping("/embed/{id}")
+    public ApiResult<Void> deleteById(@PathVariable String id) {
+        vectorStore.delete(List.of(id));
+        return ApiResult.success();
+    }
+
+    @Operation(summary = "根据过滤表达式删除文档")
+    @DeleteMapping("/embed/filter")
+    public ApiResult<Void> deleteByFilter(@Valid @RequestBody DeleteByFilterRequest request) {
+        vectorStore.delete(request.getFilterExpression());
+        return ApiResult.success();
     }
 }

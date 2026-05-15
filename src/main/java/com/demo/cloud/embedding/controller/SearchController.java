@@ -27,15 +27,18 @@ public class SearchController {
     @PostMapping("/search")
     public ApiResult<List<SearchVO>> search(@Valid @RequestBody SearchRequest request) {
         // Build Spring AI SearchRequest — VectorStore auto-embeds the query
-        org.springframework.ai.vectorstore.SearchRequest searchRequest =
-                org.springframework.ai.vectorstore.SearchRequest.builder()
-                        .query(request.getQuery())
-                        .topK(request.getTopK())
-                        .similarityThreshold(request.getThreshold())
-                        .build();
+        var builder = org.springframework.ai.vectorstore.SearchRequest.builder()
+                .query(request.getQuery())
+                .topK(request.getTopK())
+                .similarityThreshold(request.getThreshold());
+
+        // Add filter expression if provided
+        if (request.getFilterExpression() != null && !request.getFilterExpression().isBlank()) {
+            builder.filterExpression(request.getFilterExpression());
+        }
 
         // Execute similarity search
-        List<Document> documents = vectorStore.similaritySearch(searchRequest);
+        List<Document> documents = vectorStore.similaritySearch(builder.build());
 
         // Convert to SearchVO
         List<SearchVO> results = documents.stream()

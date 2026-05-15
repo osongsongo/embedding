@@ -5,12 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SearchRequest {
-    @NotBlank(message = "query cannot be blank")
-    private String query;
-    private Integer topK = 5;
-    private Double threshold = 0.5;
-
+public class DeleteByFilterRequest {
+    @NotBlank(message = "filterExpression cannot be blank")
     @Schema(description = "过滤表达式，如: source_type == 'pdf'", example = "source_type == 'pdf'")
     private String filterExpression;
 }
